@@ -1,0 +1,39 @@
+{
+  "name": "btp-connect-api",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "lint": "eslint . --ext .ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.0",
+    "@fastify/helmet": "^12.0.0",
+    "@fastify/jwt": "^8.0.0",
+    "@fastify/rate-limit": "^9.0.0",
+    "@fastify/swagger": "^9.0.0",
+    "@fastify/swagger-ui": "^4.0.0",
+    "@fastify/multipart": "^8.0.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.28.1",
+    "zod": "^3.23.8",
+    "@prisma/client": "^5.18.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/node": "^20.14.10",
+    "@types/uuid": "^9.0.8",
+    "eslint": "^9.9.0",
+    "tsx": "^4.16.5",
+    "typescript": "^5.5.4",
+    "prisma": "^5.18.0"
+  }
+}

@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  CONDUCTEUR
+  COMPTABLE
+}
+
+model Entreprise {
+  id        String   @id @default(uuid())
+  nom       String
+  siret     String?  @db.VarChar(14)
+  plan      String?
+  createdAt DateTime @default(now())
+
+  users     User[]
+  st        SousTraitant[]
+  chantiers Chantier[]
+}
+
+model User {
+  id           String   @id @default(uuid())
+  entrepriseId String
+  entreprise   Entreprise @relation(fields: [entrepriseId], references: [id], onDelete: Cascade)
+
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(CONDUCTEUR)
+  createdAt    DateTime @default(now())
+
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  tokenHash String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  revokedAt DateTime?
+}
+
+model SousTraitant {
+  id           String @id @default(uuid())
+  entrepriseId String
+  entreprise   Entreprise @relation(fields: [entrepriseId], references: [id], onDelete: Cascade)
+
+  nom    String
+  siret  String? @db.VarChar(14)
+  metier String?
+  email  String?
+  tel    String?
+  ville  String?
+  note   Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Chantier {
+  id           String @id @default(uuid())
+  entrepriseId String
+  entreprise   Entreprise @relation(fields: [entrepriseId], references: [id], onDelete: Cascade)
+
+  nom     String
+  client  String?
+  adresse String?
+  montant Float?
+  statut  String? // en_cours/termine/suspendu
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
